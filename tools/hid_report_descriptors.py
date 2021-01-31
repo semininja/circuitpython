@@ -27,6 +27,7 @@ HID_DEVICE_DATA = {
     "GAMEPAD" : DeviceData(report_length=6, out_report_length=0, usage_page=0x01, usage=0x05),     # Generic Desktop, Game Pad
     "DIGITIZER" : DeviceData(report_length=5, out_report_length=0, usage_page=0x0D, usage=0x02),   # Digitizers, Pen
     "XAC_COMPATIBLE_GAMEPAD" : DeviceData(report_length=3, out_report_length=0, usage_page=0x01, usage=0x05), # Generic Desktop, Game Pad
+    "HANDBRAKE" : DeviceData(report_length=2, out_report_length=0, usage_page = 0x01, usage=0x05), # Generic Desktop, Game Pad
     "RAW" : DeviceData(report_length=64, out_report_length=0, usage_page=0xFFAF, usage=0xAF),      # Vendor 0xFFAF "Adafruit", 0xAF
     }
 
@@ -258,6 +259,23 @@ def xac_compatible_gamepad_hid_descriptor(report_id):
              0xC0                #  End Collection
             )))
 
+def handbrake(report_id):
+    data = HID_DEVICE_DATA["HANDBRAKE"]
+    return hid.ReportDescriptor(
+        description="HANDBRAKE",
+        report_descriptor=bytes(
+            (0x05, data.usage_page,  #  Usage Page (Generic Desktop),
+             0x09, data.usage,       #  Usage (Gamepad),
+             0xA1, 0x01,             #  Collection (Application),
+             0x15, 0x00,             #      Logical Minimum (0),
+             0x26, 0xFF, 0x3F,       #      Logical Maximum (16383),
+             0x75, 0x0E,             #      Report Size (14),
+             0x95, 0x01,             #      Report Count (1),
+             0x75, 0x02,             #      Report Size (2),
+             0x95, 0x01,             #      Report Count (1),
+             0xC0                    #  End Collection
+            )))
+
 def raw_hid_descriptor(report_id):
     if report_id != 0:
         raise ValueError("raw hid must not have a report id")
@@ -291,5 +309,6 @@ REPORT_DESCRIPTOR_FUNCTIONS = {
     "GAMEPAD" : gamepad_hid_descriptor,
     "DIGITIZER" : digitizer_hid_descriptor,
     "XAC_COMPATIBLE_GAMEPAD" : xac_compatible_gamepad_hid_descriptor,
+    "HANDBRAKE" : handbrake,
     "RAW" : raw_hid_descriptor,
 }
