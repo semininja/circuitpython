@@ -78,7 +78,6 @@ void common_hal_busio_i2c_construct(busio_i2c_obj_t *self,
 
 #if CIRCUITPY_REQUIRE_I2C_PULLUPS
     // Test that the pins are in a high state. (Hopefully indicating they are pulled up.)
-    #error not false
     gpio_set_pin_function(sda->number, GPIO_PIN_FUNCTION_OFF);
     gpio_set_pin_function(scl->number, GPIO_PIN_FUNCTION_OFF);
     gpio_set_pin_direction(sda->number, GPIO_DIRECTION_IN);
